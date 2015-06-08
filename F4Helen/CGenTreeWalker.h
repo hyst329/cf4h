@@ -35,6 +35,11 @@ private:
     }
     std::string _gen_infer_type(AST *ast);
     static std::string _gen_literal(std::string type, std::string value);
+    void _gen_write_indent(std::ostream& f)
+    {
+        for(int i = 0; i < _gen_indent * 4; i++)
+            _gen_write(" ", f);
+    }
 };
 
 } // namespace F4Helen

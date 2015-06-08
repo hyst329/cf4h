@@ -18,10 +18,9 @@ int CGenTreeWalker::codegen(AST *ast, std::ostream &f)
 {
     if(!ast) return 0;
     std::string _end = _gen_with_semi ? ";" : "";
-    if(_gen_with_semi)
+    if(_gen_with_endline)
     {
-        for(int i = 0; i < _gen_indent * 4; i++)
-            _gen_write(" ", f);
+        _gen_write_indent(f);
     }
     if(ast->type == "ROOT")
     {
@@ -86,17 +85,13 @@ int CGenTreeWalker::codegen(AST *ast, std::ostream &f)
     if(ast->type == "IF")
     {
         _gen_write("if (" + _gen_expr(ast->children[0]) + ")\n", f);
-        _gen_indent++;
         _gen_write("{\n", f);
         codegen(ast->children[1], f);
-        _gen_indent--;
         _gen_write("}\n", f);
         if(ast->children[2])
         {
-            _gen_indent--;
             _gen_write("else\n{\n", f);
             codegen(ast->children[2], f);
-            _gen_indent++;
             _gen_write("}\n", f);
         }
     }
@@ -107,25 +102,26 @@ int CGenTreeWalker::codegen(AST *ast, std::ostream &f)
         _gen_indent = 0;
         _gen_with_endline = 0;
         codegen(ast->children[0], f);
+        _gen_write(" ", f);
         _gen_indent = old_indent;
-        _gen_write(_gen_expr(ast->children[1]) + _end, f);
+        _gen_write(_gen_expr(ast->children[1]) + _end + " ", f);
         _gen_with_semi = 0;
         codegen(ast->children[2], f);
         _gen_with_endline = 1;
         _gen_with_semi = 1;
         _gen_write(")\n", f);
         _gen_write("{\n", f);
-        _gen_indent++;
         codegen(ast->children[3], f);
-        _gen_indent--;
         _gen_write("}", f);
     }
     if(ast->type == "FUN")
     {
+        //_gen_funmap[ast->children[0]->value] = ast->children[2];
         // TODO Function
     }
     if(ast->type == "DECL")
     {
+        //_gen_funmap[ast->children[0]->value] = ast->children[2];
         // TODO Extern
     }
     if(ast->type == "RSZ")
