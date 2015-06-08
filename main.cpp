@@ -17,13 +17,15 @@ extern char *yytext;
 
 enum
 {
-    MODE_GENERATE_C
+    MODE_GENERATE_C,
+    MODE_LLVM
 };
 static int mode;
 
 static option opts[] =
 {
-    {"generate", no_argument, &mode, MODE_GENERATE_C}
+    {"generate", no_argument, &mode, MODE_GENERATE_C},
+    {"generate-llvm", no_argument, &mode, MODE_GENERATE_C}
 };
 
 int main(int argc, char **argv)
@@ -34,6 +36,7 @@ int main(int argc, char **argv)
         printf("Usage: cf4helen [options] input-file\n");
         printf("\twhere [options] are:\n");
         printf("\t\t-g, --generate\t\tgenerate C file");
+        printf("\t\t-l, --generate-llvm\t\tgenerate LLVM");
         exit(0);
     }
     printf("Running for file: %s\n", argv[argc - 1]);
@@ -48,7 +51,7 @@ int main(int argc, char **argv)
     int option_index = 0;
     while(1)
     {
-        int c = getopt_long(argc, argv, "g", opts, &option_index);
+        int c = getopt_long(argc, argv, "gl", opts, &option_index);
         if(c == -1) break;
     }
     switch(mode)

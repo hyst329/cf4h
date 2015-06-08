@@ -2,7 +2,7 @@
 
 namespace F4Helen {
 
-LLVMTreeWalker::LLVMTreeWalker()
+LLVMTreeWalker::LLVMTreeWalker() : _builder(getGlobalContext())
 {
     //ctor
 }
