@@ -1,16 +1,13 @@
 #include "TreeWalker.h"
 
-namespace F4Helen
-{
+namespace F4Helen {
 
-TreeWalker::TreeWalker()
-{
-    //ctor
-}
+    TreeWalker::TreeWalker() {
+        //ctor
+    }
 
-TreeWalker::~TreeWalker()
-{
-    //dtor
-}
+    TreeWalker::~TreeWalker() {
+        //dtor
+    }
 
 } // namespace F4Helen

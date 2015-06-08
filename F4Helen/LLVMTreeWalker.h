@@ -11,21 +11,30 @@
 
 namespace F4Helen {
 
-using namespace llvm;
+    using namespace llvm;
 
-class LLVMTreeWalker : public TreeWalker
-{
+    class LLVMTreeWalker : public TreeWalker {
     public:
         LLVMTreeWalker();
+
         virtual ~LLVMTreeWalker();
+
     protected:
     private:
-        AST *_error(const char *str) { fprintf(stderr, "Error: %s\n", str); return 0; }
-        Value *_error_v(const char *str) { _error(str); return 0; }
+        AST *_error(const char *str) {
+            fprintf(stderr, "Error: %s\n", str);
+            return 0;
+        }
+
+        Value *_error_v(const char *str) {
+            _error(str);
+            return 0;
+        }
+
         Module *_module;
-        IRBuilder<> _builder;
-        std::map<std::string, Value*> _value_map;
-};
+        IRBuilder<> *_builder;
+        std::map<std::string, Value *> _value_map;
+    };
 
 } // namespace F4Helen
 

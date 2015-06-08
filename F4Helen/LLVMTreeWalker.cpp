@@ -2,14 +2,14 @@
 
 namespace F4Helen {
 
-LLVMTreeWalker::LLVMTreeWalker() : _builder(getGlobalContext())
-{
-    //ctor
-}
+    using namespace llvm;
 
-LLVMTreeWalker::~LLVMTreeWalker()
-{
-    //dtor
-}
+    LLVMTreeWalker::LLVMTreeWalker() {
+        _builder = new IRBuilder<>(getGlobalContext());
+    }
+
+    LLVMTreeWalker::~LLVMTreeWalker() {
+        delete _builder;
+    }
 
 } // namespace F4Helen

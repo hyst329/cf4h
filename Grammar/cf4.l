@@ -5,13 +5,18 @@ using namespace F4Helen;
 
 #include <cstdlib>
 #include <string>
-#include "cf4.parser.hh"
+#include "cf4.y.hpp"
 
 using namespace std;
 
 void yyerror(AST* result, const char *s)
 {
     printf("Error in line %d: %s\n", yylineno, s);
+};
+
+extern "C" int yywrap()
+{
+    return 1;
 };
 
 %}
