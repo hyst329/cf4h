@@ -2,9 +2,12 @@
 cmake_minimum_required(VERSION 2.8)
 project(CF4H)
 
+include(CPack)
+
 # Versioning
 set (CF4H_VERSION_MAJOR 1)
 set (CF4H_VERSION_MINOR 0)
+set (CF4H_VERSION_PATCH 0)
 
 # LLVM
 find_package(LLVM REQUIRED CONFIG)

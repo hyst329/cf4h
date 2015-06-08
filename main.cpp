@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <fstream>
+#include <iostream>
 #include "version.h"
 #include "F4Helen/AST.h"
 #include "F4Helen/CGenTreeWalker.h"
+#include "F4Helen/LLVMTreeWalker.h"
 
 using namespace std;
 using namespace F4Helen;
@@ -29,7 +31,7 @@ static int mode;
 static option opts[] =
         {
                 {"generate",      no_argument, &mode, MODE_GENERATE_C},
-                {"generate-llvm", no_argument, &mode, MODE_GENERATE_C}
+                {"generate-llvm", no_argument, &mode, MODE_LLVM}
         };
 
 int main(int argc, char **argv) {
@@ -37,8 +39,8 @@ int main(int argc, char **argv) {
         printf("CF4Helen v%s (%s-%s-%s)\n", FULLVERSION_STRING, YEAR, MONTH, DATE);
         printf("Usage: cf4helen [options] input-file\n");
         printf("\twhere [options] are:\n");
-        printf("\t\t-g, --generate\t\tgenerate C file");
-        printf("\t\t-l, --generate-llvm\t\tgenerate LLVM");
+        printf("\t\t-g, --generate\t\tgenerate C file\n");
+        printf("\t\t-l, --generate-llvm\t\tgenerate LLVM\n");
         exit(0);
     }
     printf("Running for file: %s\n", argv[argc - 1]);
@@ -54,12 +56,21 @@ int main(int argc, char **argv) {
         int c = getopt_long(argc, argv, "gl", opts, &option_index);
         if (c == -1) break;
     }
+    CGenTreeWalker *cgtw;
+    LLVMTreeWalker *llvmtw;
+    ofstream f;
     switch (mode) {
         case MODE_GENERATE_C:
             printf("Generating code...\n");
-            CGenTreeWalker cgtw;
-            ofstream f(argv[argc - 1] + std::string(".cpp"));
-            cgtw.codegen(res, f);
+            cgtw = new CGenTreeWalker;
+            f.open(argv[argc - 1] + std::string(".cpp"));
+            cgtw->codegen(res, f);
             f.close();
+            break;
+        case MODE_LLVM:
+            printf("JIT interpret...\n");
+            llvmtw = new LLVMTreeWalker;
+            llvmtw->codegen(res, cout);
+            break;
     }
 }

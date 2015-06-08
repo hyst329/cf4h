@@ -15,6 +15,8 @@ namespace F4Helen {
 
     class LLVMTreeWalker : public TreeWalker {
     public:
+        virtual int codegen(AST *ast, std::ostream &f);
+
         LLVMTreeWalker();
 
         virtual ~LLVMTreeWalker();
