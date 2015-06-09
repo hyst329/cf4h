@@ -33,6 +33,8 @@ namespace F4Helen {
             return 0;
         }
 
+        Value *_expr(AST* ast);
+
         Module *_module;
         IRBuilder<> *_builder;
         std::map<std::string, Value *> _value_map;
