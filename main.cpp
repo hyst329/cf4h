@@ -56,6 +56,7 @@ int main(int argc, char **argv) {
         int c = getopt_long(argc, argv, "gl", opts, &option_index);
         if (c == -1) break;
     }
+    mode = 1;
     CGenTreeWalker *cgtw;
     LLVMTreeWalker *llvmtw;
     ofstream f;
@@ -69,7 +70,7 @@ int main(int argc, char **argv) {
             break;
         case MODE_LLVM:
             printf("JIT interpret...\n");
-            llvmtw = new LLVMTreeWalker;
+            llvmtw = new LLVMTreeWalker(argv[argc - 1]);
             llvmtw->codegen(res, cout);
             break;
     }

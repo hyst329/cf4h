@@ -17,7 +17,7 @@ namespace F4Helen {
     public:
         virtual int codegen(AST *ast, std::ostream &f);
 
-        LLVMTreeWalker();
+        LLVMTreeWalker(std::string module);
 
         virtual ~LLVMTreeWalker();
 

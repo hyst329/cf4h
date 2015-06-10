@@ -1,4 +1,4 @@
-int n = 2
+int n = 2 + (3 * 9)
 int a.n
 a.2 = 3
 resize a(a.2 + 3)
