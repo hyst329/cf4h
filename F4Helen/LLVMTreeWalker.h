@@ -19,6 +19,8 @@ namespace F4Helen {
 
         LLVMTreeWalker(std::string module);
 
+        Module *getModule() { return _module; }
+
         virtual ~LLVMTreeWalker();
 
     protected:
@@ -33,7 +35,16 @@ namespace F4Helen {
             return 0;
         }
 
-        Value *_expr(AST* ast);
+        // Helper method to get the LLVM Type by F4/Helen typename
+        Type *_gettype(std::string name) {
+            if (name == "INT") return Type::getInt64Ty(getGlobalContext());
+            if (name == "CHAR") return Type::getInt8Ty(getGlobalContext());
+            if (name == "REAL") return Type::getDoubleTy(getGlobalContext());
+            // TODO String
+            return _module->getTypeByName(name);
+        }
+
+        Value *_expr(AST *ast);
 
         Module *_module;
         IRBuilder<> *_builder;

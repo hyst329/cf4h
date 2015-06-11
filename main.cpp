@@ -7,6 +7,7 @@
 #include "F4Helen/AST.h"
 #include "F4Helen/CGenTreeWalker.h"
 #include "F4Helen/LLVMTreeWalker.h"
+#include "F4Helen/LLVMExecutionEngine.h"
 
 using namespace std;
 using namespace F4Helen;
@@ -59,6 +60,7 @@ int main(int argc, char **argv) {
     mode = 1;
     CGenTreeWalker *cgtw;
     LLVMTreeWalker *llvmtw;
+    LLVMExecutionEngine *llvmee;
     ofstream f;
     switch (mode) {
         case MODE_GENERATE_C:
@@ -69,9 +71,12 @@ int main(int argc, char **argv) {
             f.close();
             break;
         case MODE_LLVM:
-            printf("JIT interpret...\n");
+            printf("Generating JIT...\n");
             llvmtw = new LLVMTreeWalker(argv[argc - 1]);
             llvmtw->codegen(res, cout);
+            printf("Executing...\n");
+            llvmee = new LLVMExecutionEngine(llvmtw->getModule());
+            printf("Successfully executed returning status %d!\n", llvmee->executeCode());
             break;
     }
 }

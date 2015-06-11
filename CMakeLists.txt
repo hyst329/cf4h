@@ -28,14 +28,14 @@ FLEX_TARGET(cf4scanner Grammar/cf4.l ${PROJECT_SOURCE_DIR}/Grammar/cf4.l.cpp)
 ADD_FLEX_BISON_DEPENDENCY(cf4scanner cf4parser)
 
 # Main executable
-set(CF4H_SRC main.cpp F4Helen/AST.cpp F4Helen/CGenTreeWalker.cpp F4Helen/LLVMTreeWalker.cpp F4Helen/TreeWalker.cpp)
-set(CF4H_HEAD version.h F4Helen/AST.h F4Helen/CGenTreeWalker.h F4Helen/LLVMTreeWalker.h F4Helen/TreeWalker.h)
+set(CF4H_SRC main.cpp F4Helen/AST.cpp F4Helen/CGenTreeWalker.cpp F4Helen/LLVMTreeWalker.cpp F4Helen/TreeWalker.cpp F4Helen/LLVMExecutionEngine.cpp)
+set(CF4H_HEAD version.h F4Helen/AST.h F4Helen/CGenTreeWalker.h F4Helen/LLVMTreeWalker.h F4Helen/TreeWalker.h F4Helen/LLVMExecutionEngine.h)
 
 add_executable(cf4h ${CF4H_SRC} ${BISON_cf4parser_OUTPUTS} ${FLEX_cf4scanner_OUTPUTS})
 
 # Find the libraries that correspond to the LLVM components
 # that we wish to use
-llvm_map_components_to_libnames(llvm_libs core)
+llvm_map_components_to_libnames(llvm_libs core executionengine)
 
 # message(FATAL_ERROR "LLVM libs: ${llvm_libs}")
 

@@ -15,10 +15,16 @@ namespace F4Helen {
 
     int LLVMTreeWalker::codegen(AST *ast, std::ostream &f) {
         if (!ast) return 0;
-        f << ast->type << std::endl;
         if (ast->type == "ROOT") {
-            Function* _main = Function::Create(FunctionType::get(Type::getInt64Ty(getGlobalContext()),
-            std::vector<Type*>(), 0), Function::CommonLinkage, "__main", _module);
+            // IO (printf & scanf)
+            auto ioft = FunctionType::get(Type::getInt32Ty(getGlobalContext()),
+                                          std::vector<Type *>(1, Type::getInt8PtrTy(getGlobalContext())),
+                                          1);
+            Function *_printf = Function::Create(ioft, Function::ExternalLinkage, "printf", _module);
+            Function *_scanf = Function::Create(ioft, Function::ExternalLinkage, "scanf", _module);
+            // Main function
+            Function *_main = Function::Create(FunctionType::get(Type::getInt64Ty(getGlobalContext()), 0),
+                                               Function::CommonLinkage, "__main", _module);
             BasicBlock *bb = BasicBlock::Create(getGlobalContext(), "entry", _main);
             _builder->SetInsertPoint(bb);
             for (auto v : ast->children) {
@@ -120,8 +126,8 @@ namespace F4Helen {
             return _builder->CreateCall(callee, args, "calltmp");
         }
         if (op == "INT") return ConstantInt::get(getGlobalContext(), APInt(64, strtoull(ast->value.c_str(), 0, 10), 1));
+        if (op == "CHAR") return ConstantInt::get(getGlobalContext(), APInt(8, (uint8_t) ast->value[0]));
         if (op == "REAL") return ConstantFP::get(getGlobalContext(), APFloat(strtof(ast->value.c_str(), 0)));
-        // TODO Char
         // TODO String
     }
 } // namespace F4Helen
