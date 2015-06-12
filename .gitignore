@@ -36,6 +36,7 @@ Grammar/cf4.y.hpp
 
 # cf4h testbed
 Testbed/*.cf4.cpp
+Testbed/*.cf4.ll
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion

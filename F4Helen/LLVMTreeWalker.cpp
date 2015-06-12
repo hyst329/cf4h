@@ -1,4 +1,5 @@
 #include "LLVMTreeWalker.h"
+#include <LLVM/Support/raw_os_ostream.h>
 
 namespace F4Helen {
 

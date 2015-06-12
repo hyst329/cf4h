@@ -55,9 +55,12 @@ int main(int argc, char **argv) {
     int option_index = 0;
     while (1) {
         int c = getopt_long(argc, argv, "gl", opts, &option_index);
+        switch (c) {
+            case 'g': mode = MODE_GENERATE_C; break;
+            case 'l': mode = MODE_LLVM; break;
+        }
         if (c == -1) break;
     }
-    mode = 1;
     CGenTreeWalker *cgtw;
     LLVMTreeWalker *llvmtw;
     LLVMExecutionEngine *llvmee;
@@ -66,14 +69,17 @@ int main(int argc, char **argv) {
         case MODE_GENERATE_C:
             printf("Generating code...\n");
             cgtw = new CGenTreeWalker;
-            f.open(argv[argc - 1] + std::string(".cpp"));
+            f.open(argv[optind] + std::string(".cpp"));
             cgtw->codegen(res, f);
             f.close();
             delete cgtw;
             break;
         case MODE_LLVM:
+            // Don't try to write into stderr!
+            // FIXME Temporary solution
+            freopen((argv[optind] + std::string(".ll")).c_str(), "w", stderr);
             printf("Generating JIT...\n");
-            llvmtw = new LLVMTreeWalker(argv[argc - 1]);
+            llvmtw = new LLVMTreeWalker(argv[optind]);
             llvmtw->codegen(res, cout);
             printf("Executing...\n");
             llvmee = new LLVMExecutionEngine(llvmtw->getModule());
