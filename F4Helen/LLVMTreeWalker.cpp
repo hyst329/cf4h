@@ -50,17 +50,34 @@ namespace F4Helen {
 
         }
         if (ast->type == "MOV") {
-            // TODO Check for existence
-            _value_map[ast->children[1]->value] = _expr(ast->children[2]);
+            // TODO Check for existence (partial)
+//            if (!_value_map[ast->children[0]->value]) {
+//                _error("Unknown variable");
+//                return 0;
+//            }
+            _value_map[ast->children[0]->value] = _expr(ast->children[1]);
         }
         if (ast->type == "OUT") {
-
+            Value *to_out = _expr(ast->children[0]);
+            std::string fmt;
+            if (to_out->getType()->isDoubleTy()) fmt = "%f\n";
+            if (to_out->getType()->isIntegerTy(64)) fmt = "%d\n";
+            Function *_printf = _module->getFunction("printf");
+            Value *fmt_arg = ConstantExpr::getIntToPtr(
+                    ConstantInt::get(Type::getInt64Ty(getGlobalContext()), uint64_t(fmt.c_str())),
+                    PointerType::getUnqual(Type::getInt8Ty(getGlobalContext())));
+            std::vector<Value *> printf_args = {fmt_arg, to_out};
+            _builder->CreateCall(_printf, printf_args, "calltmp");
         }
         if (ast->type == "IN") {
 
         }
         if (ast->type == "IF") {
-
+//            Value *cond = _expr(ast->children[0]);
+//            // Convert to bool
+//            cond = _builder->CreateFCmpONE(cond,
+//                                           ConstantFP::get(getGlobalContext(), APFloat(0.0)),
+//                                           "ifcond");
         }
         if (ast->type == "LOOP") {
 

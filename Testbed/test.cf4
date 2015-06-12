@@ -2,6 +2,7 @@ int n = 2 + (3 * 9)
 int a.n
 a.2 = 3
 resize a(a.2 + 3)
+out a.2
 loop int i = 1, i <= 6, i = i + 1
     a.i = 12
 endloop

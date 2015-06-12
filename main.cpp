@@ -69,6 +69,7 @@ int main(int argc, char **argv) {
             f.open(argv[argc - 1] + std::string(".cpp"));
             cgtw->codegen(res, f);
             f.close();
+            delete cgtw;
             break;
         case MODE_LLVM:
             printf("Generating JIT...\n");
@@ -77,6 +78,8 @@ int main(int argc, char **argv) {
             printf("Executing...\n");
             llvmee = new LLVMExecutionEngine(llvmtw->getModule());
             printf("Successfully executed returning status %d!\n", llvmee->executeCode());
+            delete llvmtw;
+            delete llvmee;
             break;
     }
 }
